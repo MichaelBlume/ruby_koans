@@ -13,20 +13,13 @@
 # and
 #   about_triangle_project_2.rb
 #
+require 'set'
 def triangle(a, b, c)
-    if a==b
-        if b==c
-            :equilateral
-        else
-            :isosceles
-        end
-    else
-        if [a,b].include?(c)
-            :isosceles
-        else
-            :scalene
-        end
+    ssides = [a,b,c].sort
+    if ssides[0] + ssides[1] <= ssides[2]
+        raise TriangleError
     end
+    {1 => :equilateral, 2 => :isosceles, 3 => :scalene}[ssides.to_set.size]
 end
 
 # Error class used in part 2.  No need to change this code.
