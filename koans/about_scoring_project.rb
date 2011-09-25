@@ -30,28 +30,14 @@ require File.expand_path(File.dirname(__FILE__) + '/edgecase')
 # Your goal is to write the score method.
 
 def score(dice)
-    dice = dice.sort
-    score = 0
-    i=0
-    while i<dice.length
-        num = dice[i]
-        if num == dice[i+2]
-            if num == 1
-                score += 1000
-            else
-                score += num * 100
-            end
-            i += 3
-            next
-        end
-        if num == 1
-            score += 100
-        end
-        if num == 5
-            score += 50
-        end
-        i += 1
-    end
+    require 'set'
+    score=0
+    dice.to_set.each{|i|
+        times = dice.select{|j| i==j}.length
+        three_score = Hash.new(100).merge({1 => 1000})[i] * i
+        one_score = Hash.new(0).merge({1 => 100, 5 => 50})[i]
+        score += (times / 3) * three_score + (times % 3) * one_score
+    }
     score
 end
 
